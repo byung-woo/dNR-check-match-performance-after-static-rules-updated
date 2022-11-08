@@ -17,7 +17,6 @@ function checkTestMatchOutcomePerformance(resolve) {
       (result) => {
         let perf = performance.now() - start;
         let disabled_rules_count = test_context.disabled_rules_count_list[test_context.index];
-        //console.error('Result with ' + disabled_rules_count + ' disabled rules: ' + perf);
         test_context.results[test_context.index].push(perf);
 
         if (test_context.iteration >= 100) {
@@ -37,10 +36,6 @@ function startTest(resolve) {
       console.error(test_context.disabled_rules_count_list[i] + ": " +
                     getAverageAfterRemovingOutliers(perfs));
     }
-    //for (const [i, perfs] of Object.entries(test_context.results)) {
-    //  console.error(test_context.disabled_rules_count_list[i] + ": " +
-    //                JSON.stringify(Array.from(perfs, perf => perf.toFixed(2))));
-    //}
   } else {
     let disabled_rules_count = test_context.disabled_rules_count_list[test_context.index];
     test_context.results[test_context.index] = [];
@@ -52,7 +47,7 @@ function startTest(resolve) {
     };
 
     if (disabled_rules_count == 0) {
-      option.enableRuleIds = Array.from({length: 10000}, (_, i) => i + 10001);
+      option.enableRuleIds = Array.from({length: 20000}, (_, i) => i + 1);
       console.error('Enable all rules');
     } else {
       option.disableRuleIds = Array.from({length: disabled_rules_count}, (_, i) => i + 10001);
@@ -66,7 +61,7 @@ function startTest(resolve) {
 var test_context = {
   index: 0,
   iteration: 0,
-  disabled_rules_count_list: [0, 10, 100, 1000, 10000],
+  disabled_rules_count_list: Array.from({length: 21}, (_, i) => i * 250),
   results: {},
 };
 
